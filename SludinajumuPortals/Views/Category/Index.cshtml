@@ -1,0 +1,68 @@
+﻿@model SludinajumuPortals.Models.CategoryCatalogModel
+@{
+    ViewBag.Title = Model.ActiveCategory.Title;
+}
+
+@using (Html.BeginForm("Index", "Category", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <h2>@Model.ActiveCategory.Title</h2>
+
+    <div class="row" style="position: relative; top:20px">
+
+        <div class="col-sm-3" align="center">
+            <h4>Attēls</h4>
+        </div>
+
+        <div class="col-sm-7" align="center">
+            <h4>Apraksts</h4>
+        </div>
+
+        <div class="col-sm-2" align="center">
+            <h4>Cena</h4>
+        </div>
+
+    </div>
+    
+    
+    foreach (var postings in Model.Postings)
+    {
+    <div class="row">
+        <hr />
+
+        <div class="col-sm-3" align="center">
+            @foreach (string img in postings.Image.Split(';'))
+            {
+                if (!String.IsNullOrEmpty(img))
+                {
+                    <img src="@Url.Content(img)" width="100%" max-height="150px" class="img-rounded" alt="postings_image" />
+                }
+            }
+        </div>
+
+
+        <div class="col-sm-7" align="justify">
+            <h4><a href="@Url.Action("Index","Postings", new { id = postings.Id })">@postings.Title</a></h4>
+            <p>
+                <a href="@Url.Action("Index","Postings", new { id = postings.Id })">@postings.Descirption</a>
+            </p>
+        </div>
+
+        <div class="col-sm-2" align="center">
+            <span style="font-size:16px">€ @postings.Price</span>
+        </div>
+        <br>
+
+    </div>
+    }
+
+
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

@@ -1,0 +1,109 @@
+﻿@model SludinajumuPortals.Models.CategoryCatalogModel
+@{
+    ViewBag.Title = Model.ActivePosting.Title;
+}
+
+@using (Html.BeginForm("Index", "Postings", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    
+    <div class="row">
+        <div class="col-sm-5">
+            <ol class="breadcrumb">
+                <li><a href="#">@Html.ActionLink("Sludinājumi","Index","Home")</a></li>
+                <li><a href="@Url.Action("Index", "Category", new { id = Model.ActiveCategory.Id})">@Model.ActiveCategory.Title</a></li>
+                <li class="active">@Model.ActivePosting.Title</li>
+            </ol>
+        </div>
+    </div>
+    
+    <h2>@Model.ActivePosting.Title</h2>
+
+    <br />
+
+
+    
+    <div class="row">
+
+        <div class="col-sm-5">
+            <div class="row">
+                <div class="col-sm-12" align="center">
+                    @foreach(string img in Model.ActivePosting.Image.Split(';'))
+                    {
+                        if (!String.IsNullOrEmpty(img))
+                        {
+                            <img src="@Url.Content(img)" width="100%" alt="postings_image_large" />
+                        }
+                        
+                    }
+                </div>
+            </div>
+            @*
+            <div class="row">
+                <div class="col-sm-12" align="center">
+                        <img src="#" width="100%" alt="postings_image_small" />
+                        <img src="#" width="100%" alt="postings_image_small" />
+                        <img src="#" width="100%" alt="postings_image_small" />
+                </div>
+            </div>
+            *@
+        </div>
+        
+        <div class="col-sm-7">
+
+            <div class="form-group" style="margin-bottom: unset; padding-top: unset">
+                <label class="col-sm-4 control-label">Cena:</label>
+                <div class="col-sm-8">
+                    <p class="form-group" style="margin-bottom: unset; padding-top: unset; position: relative; top: 7px">€ @Model.ActivePosting.Price</p>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: unset; padding-top: unset">
+                <label class="col-sm-4 control-label">Atrašanās vieta:</label>
+                <div class="col-sm-8">
+                    <p class="form-group" style="margin-bottom: unset; padding-top: unset; position: relative; top: 7px">@Model.ActivePosting.Address</p>
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: unset; padding-top: unset">
+                <label class="col-sm-4 control-label">Pievienošanas datums:</label>
+                <div class="col-sm-8">
+                    <p class="form-group" style="margin-bottom: unset; padding-top: unset; position: relative; top: 7px">@Model.ActivePosting.DateAdded.ToShortDateString()</p>
+                </div>
+            </div>
+
+            @if (Session.IsLogged())
+            {
+
+                <div class="form-group" style="margin-bottom: unset; padding-top: unset">
+                    <label class="col-sm-4 control-label">Tālrunis:</label>
+                    <div class="col-sm-8">
+                        <p class="form-group" style="margin-bottom: unset; padding-top: unset; position: relative; top: 7px">@Model.ActivePosting.Phone</p>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: unset; padding-top: unset">
+                    <label class="col-sm-4 control-label">E-pasts:</label>
+                    <div class="col-sm-8">
+                        <p class="form-group" style="margin-bottom: unset; padding-top: unset; position: relative; top: 7px">@Model.ActivePosting.Email</p>
+                    </div>
+                </div>
+            }
+
+            <div class="form-group" style="margin-bottom: unset; padding-top: unset">
+                <label class="col-sm-4 control-label">Apraksts:</label>
+                <div class="col-sm-8">
+                    <p class="form-group" style="margin-bottom: unset; padding-top: unset; position: relative; top: 7px">
+                        @Model.ActivePosting.Descirption
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

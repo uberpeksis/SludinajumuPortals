@@ -1,0 +1,28 @@
+﻿@model SludinajumuPortals.Models.CategoryCatalogModel
+@{
+    ViewBag.Title = "Sludinājumu portāls";
+}
+
+<div class="row">
+
+    <br />
+
+    <div class="col-sm-12">
+        @foreach (var data in Model.Categories.Where(c => c.ParentCategoryId == null))
+        {
+            <span class=" list-group col-sm-3 col-sm-6 display-flex">
+                <a href="#" class="list-group-item" style="background-color:dimgrey; color:white">
+                    @data.Title
+                </a>
+                @foreach (var subcategory in Model.Categories.Where(c => c.ParentCategoryId == data.Id))
+                {
+                    <a href="@Url.Action("Index", "Category", new { id = subcategory.Id})" class="list-group-item">
+                        @subcategory.Title
+                        <span class="badge">@subcategory.Count</span>
+                    </a>
+                }
+            </span>
+        }
+    </div>
+
+</div>

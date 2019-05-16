@@ -1,0 +1,90 @@
+﻿@model SludinajumuPortals.Models.NewPostingsModel
+@{
+    ViewBag.Title = "Sludinājumu pievienošana";
+}
+
+@using (Html.BeginForm("NewPostings", "Postings", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <h2>Pievienot sludinājumu</h2>
+
+    <br>
+
+    if (TempData["Success"] != null)
+    {
+        <div>
+            <div class="alert alert-success" role="alert">@TempData["Success"]</div>
+        </div>
+    }
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.CategoryId, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <select name="@Html.NameFor(m => m.CategoryId)" class="form-control">
+                @foreach (var cat in Model.Categories.Where(c => c.ParentCategoryId == null))
+                {
+                    <optgroup label="@cat.Title" class="form-control">
+                        @foreach (var subcat in Model.Categories.Where(c => c.ParentCategoryId == cat.Id))
+                        {
+                            <option value="@subcat.Id" class="form-control">@subcat.Title</option>
+                        }
+                    </optgroup>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Title, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Price, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Price, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Adress, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Adress, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Image, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <input type="file" name="Image" value="Izvēlēties failu" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10" padding="top:20px">
+            <input type="submit" class="btn btn-default" value="Saglabāt sludinājumu" />
+        </div>
+    </div>
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
